@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+[Link to codecademy lesson](https://www.codecademy.com/courses/react-101/lessons/the-state-hook/exercises/arrays-in-state)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The State Hook
+Arrays in State
+28 min
+JavaScript arrays are the best data model for managing and rendering JSX lists. Let’s take a look at the code for a website for a pizza restaurant.
 
-## Available Scripts
+import React, { useState } from 'react';
 
-In the project directory, you can run:
+//Static array of pizza options offered. 
+const options = ['Bell Pepper', 'Sausage', 'Pepperoni', 'Pineapple'];
 
-### `npm start`
+export default function PersonalPizza() {
+  const [selected, setSelected] = useState([]);
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+  const toggleTopping = ({target}) => {
+    const clickedTopping = target.value;
+    setSelected((prev) => {
+     // check if clicked topping is already selected
+      if (prev.includes(clickedTopping)) {
+        // filter the clicked topping out of state
+        return prev.filter(t => t !== clickedTopping);
+      } else {
+        // add the clicked topping to our state
+        return [clickedTopping, ...prev];
+      }
+    });
+  };
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+  return (
+    <div>
+      {options.map(option => (
+        <button value={option} onClick={toggleTopping} key={option}>
+          {selected.includes(option) ? 'Remove ' : 'Add '}
+          {option}
+        </button>
+      ))}
+      <p>Order a {selected.join(', ')} pizza</p>
+    </div>
+  );
+}
 
-### `npm test`
+In the above example, we are using two arrays:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The options array contains the names of all of the pizza toppings available.
+The selected array represents the selected toppings for our personal pizza.
+The options array contains static data, meaning that it does not change. It’s best practice to define static data models outside of function components since they don’t need to be recreated each time our component re-renders. In our JSX, we use the JavaScript .map() method to render a button for each of the toppings in our options array.
 
-### `npm run build`
+The selected array contains dynamic data, meaning that it changes, usually based on a user’s actions. We initialize selected as an empty array. When a button is clicked, the toggleTopping() event handler is called. Notice how this event handler uses information from the event object to determine which topping was clicked.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+When updating an array in a state, we do not just add new data to the previous array. We replace the previous array with a brand new array. This means that any information that we want to save from the previous array needs to be explicitly copied over to our new array. That’s what this spread syntax does for us: ...prev.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Notice how we use the .includes(), .filter(), and .map() methods of our arrays. If these are new to you, or you just want a refresher, take a minute to review these array methods. We don’t need to be full-fledged JavaScript gurus to build React applications but know that investing time to strengthen our JavaScript skills will always help us do more faster (and have a lot more fun doing it) as React developers.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
